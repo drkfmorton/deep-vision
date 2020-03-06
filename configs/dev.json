@@ -1,0 +1,21 @@
+{
+    "AMQP": {
+    "HostURL": "dev-searchdal0503.softlayer.local",
+        "User": "searchdal0503",
+        "Password": "iTj8IU23pF",
+        "Port": 5672,
+        "Vhost": "imsdal0503",
+        "DialTimeout": 2,
+        "MaxReadBytes": 0,
+        "MaxRecordsPerWrite": 1,
+        "MaxConcurrentReads": 1,
+        "Parameters": {
+        "ConsumerTag": "nimsoft.metric.tag",
+            "Exchange": "amq.topic",
+            "ExchangeType": "topic",
+            "QueueName": "testqueue",
+            "Key": "nimsoft.metric.message.#"
+        }
+    },
+    "Dependencies": "cp, ls"
+}
