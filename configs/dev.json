@@ -1,21 +1,11 @@
 {
-    "AMQP": {
-    "HostURL": "dev-searchdal0503.softlayer.local",
-        "User": "searchdal0503",
-        "Password": "iTj8IU23pF",
-        "Port": 5672,
-        "Vhost": "imsdal0503",
-        "DialTimeout": 2,
-        "MaxReadBytes": 0,
-        "MaxRecordsPerWrite": 1,
-        "MaxConcurrentReads": 1,
-        "Parameters": {
-        "ConsumerTag": "nimsoft.metric.tag",
-            "Exchange": "amq.topic",
-            "ExchangeType": "topic",
-            "QueueName": "testqueue",
-            "Key": "nimsoft.metric.message.#"
-        }
-    },
-    "Dependencies": "cp, ls"
+    "loglevel": 3,
+    "youtube_url": "rtmp://a.rtmp.youtube.com/live2",
+    "youtube_stream_key": "8vcr-j2um-zx2x-c1c1",
+    "video_width": 1920,
+    "video_height": 1080,
+    "video_rotation": 0,
+    "video_exposure": "auto",
+    "video_awb": "auto",
+    "is_verbose": true
 }

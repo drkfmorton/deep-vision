@@ -1,11 +1,13 @@
 package main
 
 import (
+	"deep-vision/liveStream"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli" // imports as package "cli"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -16,6 +18,11 @@ func init() {
 
 	// Only log the warning severity or above.
 	log.SetLevel(log.InfoLevel)
+
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors: false,
+		FullTimestamp: true,
+	})
 }
 
 func main() {
@@ -26,6 +33,11 @@ func main() {
 				Aliases: []string{"c"},
 				Usage:   "Load configuration from `FILE`",
 			},
+			&cli.BoolFlag{
+				Name:  "live",
+				Aliases: []string{"s"},
+				Usage: "Enables liveStream.",
+			},
 		},
 	}
 
@@ -35,7 +47,12 @@ func main() {
 			loadConfig(c.String("config"))
 			log.Info(fmt.Sprintf("Config '%v.json' loaded...", c.String("config")))
 		} else {
-			log.Error("No config found. Please use config.")
+			log.Fatal("No config found. Please use config.")
+		}
+
+		if b, _ := strconv.ParseBool(c.String("live")); b == true {
+			log.Info("Starting live stream...")
+			startStreaming()
 		}
 
 		return nil
@@ -55,6 +72,9 @@ func main() {
 		fmt.Println(element)
 	}
 
+	log.Info("Start Streaming...")
+	log.SetLevel(log.InfoLevel)
+
 }
 
 func loadConfig(fileName string) {
@@ -66,5 +86,26 @@ func loadConfig(fileName string) {
 	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+}
+
+func startStreaming() {
+	w, _ := strconv.Atoi(fmt.Sprintf("%v", viper.Get("video_width")))
+	h, _ := strconv.Atoi(fmt.Sprintf("%v", viper.Get("video_height")))
+	r, _ := strconv.Atoi(fmt.Sprintf("%v", viper.Get("video_rotation")))
+	v, _ := strconv.ParseBool(fmt.Sprintf("%v", viper.Get("is_verbose")))
+
+	liveStream.Init(
+		fmt.Sprintf("%v", viper.Get("youtube_stream_key")),
+		w,
+		h,
+		r,
+		fmt.Sprintf("%v", viper.Get("video_exposure")),
+		fmt.Sprintf("%v", viper.Get("video_awb")),
+		v,
+	)
+
+	liveStream.Start()
+
+	log.Info("Starting live stream...")
 }
 
